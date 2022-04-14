@@ -4,7 +4,7 @@
 *	2.TB tbl_Reader(id, Name, DOB, Gender, IdentifyCard_Id, Phone, Email, Address)
 *	3.TB tbl_Bill(id, LibraryCard_ID, id_Staff, borrowed_date, ExpiredDate, quantityMax, id_Status)
 *	4.TB tbl_Bill_Detail(id_Bill, id_Book,id_Status, ReturnBookDate, MoneytaryFine, Reason)
-*	5.TB tbl_Staff(id, Name, DOB, Gender, IdentifyCard_Id, Phone, Email, Address, startDate)
+*	5.TB tbl_Staff(id, Name, DOB, Gender, IdentifyCard_Id , Phone, Email, Address, startDate)
 *	6.TB tbl_Status(id, status)
 *	7.Tb tbl_Book(id, id_TypeBook, Name, id_Author, id_Publisher, ListedPrice, Stock, currentQuantity, id_status, Year_Of_manufatore, content)
 *	8.TB tbl_TypeBook(id, type)
@@ -16,16 +16,16 @@ GO
 
 USE DB_LIBRARY_MANAGEMENT
 GO
---1.TB tbl_LibraryCard 
+--1.TB tbl_LibraryCard ✓
 CREATE TABLE TBL_LIBRARY_CARD
 (
 	ID NVARCHAR(50) PRIMARY KEY NOT NULL,
 	CREATE_DATE DATETIME NOT NULL,
 	EXPIRED_DATE DATETIME NOT NULL,
-	LIBRARY_NAME VARCHAR(50) NULL
+	LIBRARY_NAME VARCHAR(50) NULL -- NEEDLESS
 )
 GO
---2.TB tbl_Reader
+--2.TB tbl_Reader ✓
 CREATE TABLE TBL_READER
 (
 	ID VARCHAR(50) NOT NULL PRIMARY KEY,
@@ -38,30 +38,38 @@ CREATE TABLE TBL_READER
 	ADDRESS NVARCHAR(50) NULL
 )
 GO
---6.TB tbl_Status
+--6.TB tbl_Status ✓
 CREATE TABLE TBL_STATUS
 (
 	ID INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
 	[STATUS] NVARCHAR(50) NOT NULL
 )
---8.TB tbl_TypeBook
+--8.TB tbl_TypeBook ✓
 CREATE TABLE TBL_BOOKTYPE
 (
 	ID INT PRIMARY KEY NOT NULL,
 	[TYPE] NVARCHAR(50) NOT NULL
 )
---7.Tb tbl_Book
+--7.Tb tbl_Book ❌
 CREATE TABLE TBL_BOOK
 (
 	ID INT NOT NULL PRIMARY KEY
 )
 GO
---5.TB tbl_Staff
+--5.TB tbl_Staff ✓
 CREATE TABLE TBL_STAFF
 (
-	ID 
+	ID NVARCHAR(50) PRIMARY KEY NOT NULL,
+	[NAME] NVARCHAR(50) NOT NULL,
+	DOB DATETIME NULL,
+	GENDER BIT NULL, --0: FEMALE, 1 MALE
+	IDENTIFYCARD_ID NVARCHAR(20) NOT NULL,
+	PHONE NVARCHAR(10) NOT NULL,
+	EMAIL NVARCHAR(50) NOT NULL,
+	[ADDRESS] NVARCHAR(50) NULL,
+	[START_DATE] DATETIME NOT NULL
 )
-
+GO
 --3.TB tbl_Bill
 CREATE TABLE TBL_BILL
 (
@@ -71,7 +79,8 @@ CREATE TABLE TBL_BILL
 	BORROWed_DATE DATETIME NOT NULL,
 	EXPIRED_DATE DATETIME NOT NULL,
 	QUANTITY_MAX INT NOT NULL,
-	STATUS_ID INT NOT NULL
+	STATUS_ID INT NOT NULL,
+
 )
 GO
 
@@ -85,5 +94,21 @@ CREATE TABLE TBL_BILL_DETAIL
 	MONEYTARY_FINE INT NULL,
 	REASON NVARCHAR(200) NULL
 )
+GO
 
-
+--9.TB tbl_Publisher name, phone, email, address,
+CREATE TABLE TBL_PUBLISHER 
+(
+	ID INT PRIMARY KEY NOT NULL IDENTITY(1, 1),
+	[NAME] NVARCHAR(50) NOT NULL,
+	PHONE NVARCHAR(20) NULL,
+	EMAIL NVARCHAR(50) NOT NULL,
+	[ADDRESS] NVARCHAR(50) NULL,
+	--REPRESENTATIVE/ID_USER/... NVARCHAR(50) NOT NULL --(người đại diện ) 
+)
+--10.TB tbl_role
+CREATE TABLE TBL_ROLE 
+(
+	ID INT NOT NULL PRIMARY KEY,
+	ROLE_NAME NVARCHAR(50) NOT NULL
+)
